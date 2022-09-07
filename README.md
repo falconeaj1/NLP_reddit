@@ -2,211 +2,72 @@
 
 ### Description
 
-This project helps you practice webscraping, NLP, and classification models.
+This goal of this project was to analyze Reddit posts and create a model to predict whether a post would be viral as measured by the number of comments it received compared to the median number.
 
 ### Scenario
 
-You're fresh out of your Data Science bootcamp and looking to break through in the world of freelance data journalism. Nate Silver and co. at FiveThirtyEight have agreed to hear your pitch for a story in two weeks!
+The creator of the card game Dominion, Donald X. Vaccarino, has contracted me to analyze the sub Reddit r/Dominion and to create a model to predict which types of posts will receive more than average engagemenet as measured through the number of comments on the post compared to the median number of comments. Donald is curious if there are certain types of posts that users tend to engage more with and if there are others that people tend to avoid. 
 
-Your piece is going to be on how to create a Reddit post that will get the most engagement from Reddit users. Because this is FiveThirtyEight, you're going to have to get data and analyze it in order to make a compelling narrative.
+#### Executive Summary
 
-#### Project Summary
+This project consists of two main steps: collecting data by scraping a website and building a binary predictor.
 
-In this project, we will practice two major skills: collecting data by scraping a website and building a binary predictor.
+The problem statement for this project is: _What characteristics of a post on Reddit: r/Dominion are most predictive of the overall interaction on a thread (as measured by number of comments)?_
 
-There are two components to starting a data science problem: the problem statement, and acquiring the data.
-
-For this project, your problem statement will be: _What characteristics of a post on Reddit are most predictive of the overall interaction on a thread (as measured by number of comments)?_
-
-Your method for acquiring the data will be scraping threads from [Reddit](https://www.reddit.com/). You have two choices for data for this project:
-1. Scrape hot threads from the [Reddit homepage](https://www.reddit.com/)
-2. Scrape from a subreddit that you choose
-
-You'll acquire _AT LEAST FOUR_ pieces of information about each thread:
+The main data that was acquired for each post from the subreddit r/Dominion consisted of:
 1. The title of the thread
-2. The subreddit that the thread corresponds to
-3. The length of time it has been up on Reddit
-4. The number of comments on the thread
+2. The length of time it has been up on Reddit as measured by the day it was posted
+3. The number of comments on the thread
 
-Scrape at least 10,000 threads.
+Other data that was used in the model consisted of:
+1. The length of the title
+2. The length of the body of the post (if there was one)
+3. Whether media was present in the post
 
-Once you've got the data, you will build a classification model that, using the text and any other relevant features, predicts whether or not a given Reddit post will have above or below the _median_ number of comments.
-
-**BONUS PROBLEMS**
-1. Scrape the full text of the posts.
-2. Write the actual article that you're pitching and turn it into a blog post that you host on your personal blog.
-
----
-
-### Requirements
-
-- **Create and compare two or more models**. One of these must be a random forest, however the other can be a classifier of your choosing: logistic regression, KNN, SVM, etc.
-- Jupyter Notebook(s) with your analysis for a peer audience of data scientists
-- An executive summary of your results
-- A 8 to 10 minute presentation outlining your process and findings for a semi-technical audience. The reason we say 'semi-technical' is that FiveThirtyEight wants to see how you plan to explain your findings in your article, and their audience is likely readers who are familiar with and interested in data/statistics, but are not experts. This means that if you'd like to talk about your model works you can, but explain what exactly your model does at a high level.
-
- **Pro Tip:** You can find a good example executive summary [here](https://www.proposify.biz/blog/executive-summary).
-
- **Pro Tip 2:** When building your webscraper, use the `sleep` function to make time in between your individual requests.  Check reddit's API documentation to see how many calls they allow.  
-
- **Pro Tip 3:** Build your scraper, and rigorously test it on a few pages to make sure it works before setting it loose on all of Reddit.
-
- **Pro tip 4:** Scrape early, scrape often. Unlike earlier projects, you're collecting your own data!
-
-**Pro tip 5:** Save your results to a .csv or .txt file whenever you scrape. If you just keep your results in memory, if you computer crashes or shuts off, or you accidentally close your Jupyter notebook, you'll lose your data.
-
----
-
-### Necessary Deliverables / Submission
-
-- Code and executive summary must be in a clearly commented Jupyter Notebook
-- You must submit your slide deck
-- Materials must be submitted by 9 a.m. Wednesday, September 7th
-
----
-
-### Dataset
-
-1. We'll be utilizing a dataset derived from live web data: [Reddit.com](https://www.reddit.com/)
-2. You will scrape the data yourself using Python
-
----
+The project goal was to scrape at least 10,000 threads, but only 7,121 posts were available. Project manager, Caroline Schmitt, authorized approval to work on the project despite the full 10,000 training examples.
 
 
-### Additional Resources
-- [Advice on How to Write for a Non-Technical Audience](http://programmers.stackexchange.com/questions/11523/explaining-technical-things-to-non-technical-people)
-- [Documentation for BeautifulSoup can be found here](http://www.crummy.com/software/BeautifulSoup/).
+#### Data Scraping: `dom1_scraping.ipynb`
+The data was scraped using the API's PMAW and PRAW. PMAW was used to streamline and speed up the data collection process. Unfortunately, during the modeling process, it was realized that some of the data had errors in it. In particular, many of the posts with supposedly 0 comments on had significantly more. PRAW was used to verify every post with 0 comments actually had 0 comments or to update this value as needed. No other errors were noted, but not every value was double checked due to time constraints.
 
----
-
-### Project Feedback + Evaluation
-
-Data science is a field in which we apply data to solve real-world problems. Therefore, projects and presentations are means by which we can assess your ability to solve real-world problems in a data-driven manner.
-
-## Rubric
-Your instructor will evaluate your project (for the most part) using the following criteria.  You should make sure that you consider and/or follow most if not all of the considerations/recommendations outlined below **while** working through your project.
-
-For Project 3 the evaluation categories are as follows:<br>
-**The Data Science Process**
-- Problem Statement
-- Data Collection
-- Data Cleaning & EDA
-- Preprocessing & Modeling
-- Evaluation and Conceptual Understanding
-- Conclusion and Recommendations
-
-**Organization and Professionalism**
-- Organization
-- Visualizations
-- Python Syntax and Control Flow
-- Presentation
-
-**Scores will be out of 30 points based on the 10 categories in the rubric.** <br>
-*3 points per section*<br>
-
-| Score | Interpretation |
-| --- | --- |
-| **0** | *Project fails to meet the minimum requirements for this item.* |
-| **1** | *Project meets the minimum requirements for this item, but falls significantly short of portfolio-ready expectations.* |
-| **2** | *Project exceeds the minimum requirements for this item, but falls short of portfolio-ready expectations.* |
-| **3** | *Project meets or exceeds portfolio-ready expectations; demonstrates a thorough understanding of every outlined consideration.* |
+#### Data Distributions: `dom2_eda.ipynb`
+The r/Dominion subreddit is a very active group with significant engagement in posts. The median number of posts was 9 (originally it was 7 before the faulty data was cleaned). In the first plot below, the distribution of number of comments is shown (a cutoff of 60 comments was chosen as the graph has a high right skew). In the second plot, the histogram shows the frequency of words used in the title for posts with high amounts of comments and low amounts. The distributions are very similar. The third plot shows the histogram shows the frequency of high and low commented posts based on the year. A significantly lower amount of posts were made in 2022.
+<div>
+<img src="images/comment_freq.png" width="500"/>
+</div>
+<div>
+<img src="images/word_frequency.png" width="500"/>
+</div>
+<div>
+<img src="images/year_freq.png" width="500"/>
+</div>
 
 
-### The Data Science Process
+#### Data Modeling: `dom3_model.ipynb` and `dom4_model.ipynb`
+The primary data used in the modeling were the words used in the title. A variety of models were tested using just the text data and they nearly all had the same accuracy performance right under 60%. This was improvement over baseline, 51%, by about 8%. The classifiers tested included:
+1. Logistic Regression
+2. Naïve Bayes (Bernoulli and Multinomial)
+3. Random Forest
+4. Gradient Boost
+5. Ada Boost
+6. KNN
 
-**Problem Statement**
-- Is it clear what the goal of the project is?
-- What type of model will be developed?
-- How will success be evaluated?
-- Is the scope of the project appropriate?
-- Is it clear who cares about this or why this is important to investigate?
-- Does the student consider the audience and the primary and secondary stakeholders?
-
-**Data Collection**
-- Was enough data gathered to generate a significant result (at least 10,000 posts)?
-- Was data collected that was useful and relevant to the project?
-- Was data collection and storage optimized through custom functions, pipelines, and/or automation?
-- Was thought given to the server receiving the requests such as considering number of requests per second?
-
-**Data Cleaning and EDA**
-- Are missing values imputed/handled appropriately?
-- Are distributions examined and described?
-- Are outliers identified and addressed?
-- Are appropriate summary statistics provided?
-- Are steps taken during data cleaning and EDA framed appropriately?
-- Does the student address whether or not they are likely to be able to answer their problem statement with the provided data given what they've discovered during EDA?
-
-**Preprocessing and Modeling**
-- Is text data successfully converted to a matrix representation?
-- Are methods such as stop words, stemming, and lemmatization explored?
-- Does the student properly split and/or sample the data for validation/training purposes?
-- Does the student test and evaluate a variety of models to identify a production algorithm (**AT MINIMUM:** two models)?
-- Does the student defend their choice of production model relevant to the data at hand and the problem?
-- Does the student explain how the model works and evaluate its performance successes/downfalls?
-
-**Evaluation and Conceptual Understanding**
-- Does the student accurately identify and explain the baseline score?
-- Does the student select and use metrics relevant to the problem objective?
-- Does the student interpret the results of their model for purposes of inference?
-- Is domain knowledge demonstrated when interpreting results?
-- Does the student provide appropriate interpretation with regards to descriptive and inferential statistics?
-
-**Conclusion and Recommendations**
-- Does the student provide appropriate context to connect individual steps back to the overall project?
-- Is it clear how the final recommendations were reached?
-- Are the conclusions/recommendations clearly stated?
-- Does the conclusion answer the original problem statement?
-- Does the student address how findings of this research can be applied for the benefit of stakeholders?
-- Are future steps to move the project forward identified?
+For each of these models, a CountVectorizer and TfidfVectorizer were compared and tested using GridSearch on a few parameters. Stemming was applied to all models (including English stop words), while Lemmatization was skipped due to time constraints. However, as stated previously, most of the models had very similar performance right above baseline.
 
 
-### Organization and Professionalism
-
-**Project Organization**
-- Are modules imported correctly (using appropriate aliases)?
-- Are data imported/saved using relative paths?
-- Does the README provide a good executive summary of the project?
-- Is markdown formatting used appropriately to structure notebooks?
-- Are there an appropriate amount of comments to support the code?
-- Are files & directories organized correctly?
-- Are there unnecessary files included?
-- Do files and directories have well-structured, appropriate, consistent names?
-
-**Visualizations**
-- Are sufficient visualizations provided?
-- Do plots accurately demonstrate valid relationships?
-- Are plots labeled properly?
-- Are plots interpreted appropriately?
-- Are plots formatted and scaled appropriately for inclusion in a notebook-based technical report?
-
-**Python Syntax and Control Flow**
-- Is care taken to write human readable code?
-- Is the code syntactically correct (no runtime errors)?
-- Does the code generate desired results (logically correct)?
-- Does the code follows general best practices and style guidelines?
-- Are Pandas functions used appropriately?
-- Are `sklearn` and `NLTK` methods used appropriately?
-
-**Presentation**
-- Is the problem statement clearly presented?
-- Does a strong narrative run through the presentation building toward a final conclusion?
-- Are the conclusions/recommendations clearly stated?
-- Is the level of technicality appropriate for the intended audience?
-- Is the student substantially over or under time?
-- Does the student appropriately pace their presentation?
-- Does the student deliver their message with clarity and volume?
-- Are appropriate visualizations generated for the intended audience?
-- Are visualizations necessary and useful for supporting conclusions/explaining findings?
+A few models were tested using more features, but due to time constraints, GridSearch was not used with multiple features. The following were models were tested with multiple features:
+1. Logistic Regression
+2. Naïve Bayes (Bernoulli)
+3. Random Forest
+4. Extra Trees Boost
+5. KNN
+6. Support Vector Classifier (SVC)
 
 
------
+#### Conclusions
+The best model found was the SVC using both a CountVectorizer and TfidVectorizer. A 61.7% accuracy was achieved, about 10% higher than the baseline model. Confusion matrices as well other metrics were calculated in the modeling notebook.
 
-## Why did we choose this project for you?
+This was a hard data problem and it is unsurprising that the model does not perform better. For a human, it is very difficult to read one of these titles and predict how popular the post will be compared to other posts and there are several reasons for this. A significant amount of information is hidden by just looking at words, in particular, the quality of any attached images is completely neglected. While the model did look at whether media was present, it is impossible to decipher whether the image is engaging or not without doing analysis on it. Further, many of the posts in this subreddit were questions about how the game is played and it is impossible for simple vectorizers to predict whether humans will have significant engagment with the post or just a few responses. Sometimes, a simple answer is all that is needed. Some of the posts did receive a bit of engagement, but were still shy of the median amount! I believe the model was able to pick up some of extreme cases, such as simple questions and spam content.
 
-This project covers three of the biggest concepts we cover in the class: Classification Modeling, Natural Language Processing and Data Wrangling/Acquisition.
+I do not believe more data or other models would significantly help the model. Modeling a much more measurable task that does not depend on human likes and engagement would be much more achievalbe. Or using a Subreddit with the posts more evenly split between garbage/spam posts and actual content would achieve much higher accuracy scores for this task. Since the Dominion subreddit contains an active and passionate userbase, it is very difficult to achieve a high accuracy on this task. Looking at which posts the model thought would go viral and not, the model increased odds for a post if it contained 'card' or 'expansion' while posts with 'question' in them and posts with unrelated text (spam generally) were often correctly identified. My hypotheses for why posts with 'question' in them received less comments is because once a user answers the questions, there is not much reason for others to post on it. 
 
-**Part 1** of the project focuses on **Data wrangling/gathering/acquisition**. This is a very important skill as not all the data you will need will be in clean CSVs or a single table in SQL. There is a good chance that wherever you land you will have to gather some data from some unstructured/semi-structured sources; when possible, requesting information from an API, but often scraping it because they don't have an API (or it's terribly documented).
-
-**Part 2** of the project focuses on **Natural Language Processing** and converting standard text data (like Titles and Comments) into a format that allows us to analyze it and use it in modeling.
-
-**Part 3** of the project focuses on **Classification Modeling**. Given that project 2 was a regression focused problem, we needed to give you a classification focused problem to practice the various models, means of assessment and preprocessing associated with classification.
