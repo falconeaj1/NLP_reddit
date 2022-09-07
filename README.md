@@ -30,8 +30,8 @@ The project goal was to scrape at least 10,000 threads, but only 7,121 posts wer
 #### Data Scraping: `dom1_scraping.ipynb`
 The data was scraped using the API's PMAW and PRAW. PMAW was used to streamline and speed up the data collection process. Unfortunately, during the modeling process, it was realized that some of the data had errors in it. In particular, many of the posts with supposedly 0 comments on had significantly more. PRAW was used to verify every post with 0 comments actually had 0 comments or to update this value as needed. No other errors were noted, but not every value was double checked due to time constraints.
 
-#### Data Distributions: `dom2_eda.ipynb`
-The r/Dominion subreddit is a very active group with significant engagement in posts. The median number of posts was 9 (originally it was 7 before the faulty data was cleaned). In the first plot below, the distribution of number of comments is shown (a cutoff of 60 comments was chosen as the graph has a high right skew). In the second plot, the histogram shows the frequency of words used in the title for posts with high amounts of comments and low amounts. The distributions are very similar. The third plot shows the histogram shows the frequency of high and low commented posts based on the year. A significantly lower amount of posts were made in 2022.
+#### Data EDA/Pre-Processing: `dom2_eda.ipynb`
+The r/Dominion subreddit is a very active group with significant engagement in posts. The median number of posts was 9 (originally it was 7 before the faulty data was cleaned). In the first plot below, the distribution of number of comments is shown (a cutoff of 60 comments was chosen as the graph has is skewed highly to the right). In the second plot, the histogram shows the frequency of words used in the title for posts with high amounts of comments and low amounts. The distributions are very similar. The third plot shows the histogram shows the frequency of high and low commented posts based on the year. A significantly lower amount of posts were made in 2022.
 <div>
 <img src="images/comment_freq.png" width="500"/>
 </div>
@@ -44,7 +44,7 @@ The r/Dominion subreddit is a very active group with significant engagement in p
 
 
 #### Data Modeling: `dom3_model.ipynb` and `dom4_model.ipynb`
-The primary data used in the modeling were the words used in the title. A variety of models were tested using just the text data and they nearly all had the same accuracy performance right under 60%. This was improvement over baseline, 51%, by about 8%. The classifiers tested included:
+The primary data used in the modeling were the words used in the title. A variety of models were tested using just the text data from the title and they nearly all had the same accuracy performance right under 60%. This was improvement over baseline, 51%, by about 8%. The classifiers tested included:
 1. Logistic Regression
 2. Naïve Bayes (Bernoulli and Multinomial)
 3. Random Forest
